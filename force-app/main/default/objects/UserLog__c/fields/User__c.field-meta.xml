@@ -3,15 +3,14 @@
     <fullName>User__c</fullName>
     <externalId>false</externalId>
     <label>Utilisateur</label>
-    <length>18</length>
-    <required>true</required>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Lookup</type>
     <unique>false</unique>
     <referenceTo>User</referenceTo>
     <relationshipLabel>Journaux de l'utilisateur</relationshipLabel>
     <relationshipName>UserLogs</relationshipName>
-    <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>
     <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    <deleteConstraint>SetNull</deleteConstraint>
 </CustomField> 
