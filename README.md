@@ -1,18 +1,113 @@
-# Salesforce DX Project: Next Steps
+## 1. Vue d'ensemble du Projet
+Ce projet est une application Salesforce DX (SFDX) conçue pour gérer et traiter les fichiers journaux d'événements (Event Log Files) de manière optimisée. Il permet de suivre et d'analyser les activités des utilisateurs dans l'organisation Salesforce.
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+## 2. Architecture des Classes Apex
 
-## How Do You Plan to Deploy Your Changes?
+### 2.1 Classes Principales
+- **EventLogFileProcessor** : Version initiale du processeur de logs
+- **EventLogFileProcessorOpt** : Version optimisée avec des fonctionnalités avancées
+- **AsyncEventLogProcessor** : Version asynchrone pour le traitement en arrière-plan
+- **EventLogProcessorQueueable** : Implémentation de Queueable pour le traitement en batch
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+### 2.2 Classes de Test
+- **EventLogFileProcessorTest**
+- **EventLogFileProcessorOptTest**
+- **AsyncEventLogProcessorTest**
 
-## Configure Your Salesforce DX Project
+### 2.3 Factories de Données
+- **DataFactoryG** : Factory principale pour la génération de données de test
+- **DataFactoryGTest** : Tests de la factory de données
+- **TestDataFactory** : Factory alternative pour les tests
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+## 3. Fonctionnalités Principales
 
-## Read All About It
+### 3.1 Traitement des Logs
+- Récupération des fichiers journaux dans une plage de dates spécifique
+- Support de multiples formats (JSON, CSV)
+- Extraction des informations utilisateur
+- Traitement asynchrone des logs volumineux
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+### 3.2 Optimisations
+- Traitement par lots (batch processing)
+- Gestion des erreurs robuste
+- Extraction structurée des informations
+- Support des formats multiples
+
+## 4. Structure des Classes
+
+### 4.1 EventLogFileProcessorOpt
+```apex
+public class EventLogFileProcessorOpt {
+    // Constantes
+    private static final String USER_ID_FIELD = 'UserId';
+    private static final Integer BATCH_SIZE = 200;
+    
+    // Classes internes
+    public class EventLogInfo {
+        public Id logFileId;
+        public String eventType;
+        public Id userId;
+        public String logContent;
+        public Map<String, Object> additionalInfo;
+    }
+    
+    // Méthodes principales
+    public List<EventLogFile> getEventLogFiles(Date startDate, Date endDate)
+    public List<EventLogInfo> processEventLogs(Date startDate, Date endDate)
+    public EventLogInfo processEventLogFile(EventLogFile logFile)
+}
+```
+
+## 5. Caractéristiques Techniques
+
+### 5.1 Gestion des Données
+- Extraction des informations utilisateur
+- Support des formats JSON et CSV
+- Stockage des informations supplémentaires dans une Map
+
+### 5.2 Sécurité et Performance
+- Validation des dates d'entrée
+- Gestion des erreurs avec try-catch
+- Limitation de la taille des lots
+- Logging des erreurs
+
+### 5.3 Tests
+- Tests unitaires complets
+- Factories de données pour les tests
+- Validation des différents scénarios
+
+## 6. Bonnes Pratiques Implémentées
+
+### 6.1 Code
+- Documentation complète des méthodes
+- Utilisation de constantes
+- Gestion structurée des erreurs
+- Séparation des responsabilités
+
+### 6.2 Tests
+- Couverture de code complète
+- Tests des cas limites
+- Validation des entrées
+- Tests des scénarios d'erreur
+
+## 7. Points d'Attention
+
+### 7.1 Limitations
+- Taille maximale des lots : 200 enregistrements
+- Formats supportés : JSON et CSV
+- Dépendance à l'API Salesforce pour les logs
+
+### 7.2 Considérations de Performance
+- Utilisation de l'asynchrone pour les gros volumes
+- Optimisation des requêtes SOQL
+- Gestion de la mémoire
+
+## 8. Prochaines Étapes Recommandées
+
+1. Implémenter le traitement en temps réel
+2. Ajouter des métriques de performance
+3. Améliorer la gestion des erreurs
+4. Ajouter des fonctionnalités de reporting
+5. Optimiser davantage le traitement des gros volumes
+
+Cette documentation technique fournit une vue d'ensemble complète du projet, en mettant l'accent sur les classes Apex et leur fonctionnement. Pour des informations plus spécifiques sur certains aspects, n'hésitez pas à me demander des détails supplémentaires.
